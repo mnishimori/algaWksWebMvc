@@ -31,7 +31,7 @@ public class TituloController {
 	public ModelAndView salvar(Titulo titulo) {
 		System.out.println(">>> Salvando " + titulo.getDescricao());
 		
-		// tituloRepository.save(titulo);
+		tituloRepository.save(titulo);
 		
 		ModelAndView mv = new ModelAndView("CadastroTitulo");
 		mv.addObject("mensagem", "Título salvo com sucesso!");
