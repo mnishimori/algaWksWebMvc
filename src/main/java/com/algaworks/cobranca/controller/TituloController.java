@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,18 +25,22 @@ public class TituloController {
 	private TituloRepository tituloRepository;
 	
 	@RequestMapping("/novo")
-	public ModelAndView novo() {
+	public ModelAndView novo(Titulo titulo) {
 		ModelAndView mv = new ModelAndView("CadastroTitulo");
+		mv.addObject(titulo);
 		return mv;
 	}
 	
 	@PostMapping
-	public ModelAndView salvar(Titulo titulo) {
+	public ModelAndView salvar(@Validated Titulo titulo, Errors errors) {
+		ModelAndView mv = new ModelAndView("CadastroTitulo");
+		if (errors.hasErrors()) {
+			return mv;
+		}
 		System.out.println(">>> Salvando " + titulo.getDescricao());
 		
 		tituloRepository.save(titulo);
 		
-		ModelAndView mv = new ModelAndView("CadastroTitulo");
 		mv.addObject("mensagem", "Título salvo com sucesso!");
 		return mv;
 	}
