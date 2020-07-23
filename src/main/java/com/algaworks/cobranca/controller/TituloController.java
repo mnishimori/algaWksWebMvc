@@ -40,8 +40,13 @@ public class TituloController {
 	}
 	
 	@GetMapping
-	public String pesquisar() {
-		return "PesquisaTitulos";
+	public ModelAndView pesquisar() {
+		List<Titulo> todosTitulos = tituloRepository.findAll();
+		
+		ModelAndView mv = new ModelAndView("PesquisaTitulos");
+		mv.addObject("titulos", todosTitulos);
+		
+		return mv;
 	}
 	
 	@ModelAttribute("todosStatusTitulo")
