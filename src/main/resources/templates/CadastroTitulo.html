@@ -9,7 +9,7 @@
 
 <section layout:fragment="conteudo">
     <form class="form-horizontal" method="POST" action="/titulos" th:object="${titulo}">
-    	<div layout:replace="Mensagem"></div>
+    	<div th:replace="Mensagem"></div>
     
     	<div class="panel panel-default">
     		<div class="panel-heading">
