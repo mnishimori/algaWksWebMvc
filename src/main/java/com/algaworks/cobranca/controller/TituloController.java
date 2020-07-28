@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -43,10 +43,16 @@ public class TituloController {
 			return CADASTRO_VIEW;
 		}
 		
-		tituloRepository.save(titulo);
+		try {
+			tituloRepository.save(titulo);
+			
+			attributes.addFlashAttribute("mensagem", "Título salvo com sucesso!");
+			return "redirect:/titulos/novo";
+		} catch (DataIntegrityViolationException e) {
+			errors.rejectValue("dataVencimento", null, "Formato de data inválido");
+			return CADASTRO_VIEW;
+		}
 		
-		attributes.addFlashAttribute("mensagem", "Título salvo com sucesso!");
-		return "redirect:/titulos/novo";
 	}
 	
 	@GetMapping
