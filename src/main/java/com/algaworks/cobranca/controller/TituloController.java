@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.algaworks.cobranca.model.StatusTitulo;
 import com.algaworks.cobranca.model.Titulo;
 import com.algaworks.cobranca.repository.TituloRepository;
+import com.algaworks.cobranca.repository.filter.TituloFilter;
 import com.algaworks.cobranca.service.TituloService;
 
 @Controller
@@ -61,8 +62,8 @@ public class TituloController {
 	}
 	
 	@GetMapping
-	public ModelAndView pesquisar() {
-		List<Titulo> todosTitulos = tituloRepository.findAll();
+	public ModelAndView pesquisar(@ModelAttribute("filtro") TituloFilter filtro) {
+		List<Titulo> todosTitulos = tituloService.pesquisarTitulo(filtro);
 		
 		ModelAndView mv = new ModelAndView("PesquisaTitulos");
 		mv.addObject("titulos", todosTitulos);
